@@ -99,6 +99,8 @@ get_unit_IPs() {
 
 declare -a lnav_arguments=()
 juju_info_loaded=0
+debug=0
+declare -a cached_arguments=()
 
 if ! command -v lnav > /dev/null; then
     cat <<EOF
@@ -125,22 +127,35 @@ $(basename "$0") UNIT:LOGFILES [UNIT:LOGFILES [UNIT:LOGFILES [...]]]
 
 Options:
 
+--debug     Print a lot of debug information
+
 UNIT        is the name of the unit
 LOGFILES    is a regular shell GLOB
 EOF
             exit 0
             ;;
+        --debug)
+            debug=1
+            ;;
         *)
-            if (( juju_info_loaded == 0 )); then
-                get_machine_IPs
-                get_container_IPs
-                get_unit_IPs
-                juju_info_loaded=1
-            fi
-            expand_unit "$1"
+            cached_arguments=( "${cached_arguments[@]}" "$1" )
             ;;
     esac
     shift
+done
+
+if (( debug > 0 )); then
+    set +x
+fi
+
+for argument in "${cached_arguments[@]}"; do
+    if (( juju_info_loaded == 0 )); then
+        get_machine_IPs
+        get_container_IPs
+        get_unit_IPs
+        juju_info_loaded=1
+    fi
+    expand_unit "${argument}"
 done
 
 echo "lnav ${lnav_arguments[*]}"
