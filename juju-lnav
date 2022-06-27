@@ -100,7 +100,13 @@ juju_info_loaded=0
 debug=0
 declare -a cached_arguments=()
 
-if ! command -v lnav > /dev/null; then
+LNAV=not-found
+if command -v lnav > /dev/null; then
+    LNAV=lnav
+elif [[ -x ${SNAP}/lnav-snap/bin/lnav ]]; then
+    export LD_LIBRARY_PATH="${SNAP}/lnav-snap/lib/x86_64-linux-gnu"
+    LNAV=${SNAP}/lnav-snap/bin/lnav
+else
     cat <<EOF
 Please install lnav with
 
@@ -157,4 +163,4 @@ for argument in "${cached_arguments[@]}"; do
 done
 
 echo "lnav ${lnav_arguments[*]}"
-lnav "${lnav_arguments[@]}"
+${LNAV} "${lnav_arguments[@]}"
