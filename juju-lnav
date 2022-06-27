@@ -6,11 +6,14 @@ declare -A MACHINES=()
 declare -A CONTAINERS=()
 declare -A UNITS=()
 
+SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
 install_ssh_key() {
     local unit
     for unit in $@; do
         echo "installing ssh key for ${unit}"
-        cat ~/.ssh/id_rsa.pub | timeout 10 juju ssh ${unit} -- sudo tee --append /root/.ssh/authorized_keys
+        cat ~/.ssh/id_rsa.pub | timeout 10 juju ssh "${unit}" \
+            -- sudo tee --append /root/.ssh/authorized_keys
     done
 }
 
@@ -51,8 +54,9 @@ expand_unit() {
         return
     fi
     echo "checking ssh key for ${ip_address}"
-    if ! timeout 5 ssh "root@${ip_address}" < /dev//null > /dev/null 2>&1; then
-        install_ssh_key "${ip_address}"
+    if ! timeout 5 ssh ${SSH_OPTIONS} "root@${ip_address}" < /dev//null > /dev/null 2>&1; then
+        ssh-keygen -R "${ip_address}"
+        install_ssh_key "${unit}"
     fi
     lnav_arguments=( "${lnav_arguments[@]}" "root@${ip_address}:${files}" )
 }
