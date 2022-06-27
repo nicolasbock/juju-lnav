@@ -31,6 +31,12 @@ The `lnav` log viewer needs to be installed separately either via snap
 $ sudo snap install lnav
 ```
 
+The snap needs to be connected to the `ssh-keys` interface:
+
+```console
+$ sudo snap connect lnav:ssh-keys
+```
+
 or via package
 
 ```console
