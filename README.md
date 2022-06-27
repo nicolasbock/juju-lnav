@@ -1,4 +1,4 @@
-# juju-lnav
+# `juju-lnav`
 
 A script to look at logs from multiple Juju units
 

@@ -102,6 +102,10 @@ Please install lnav with
 
 sudo snap install --edge lnav
 
+or
+
+sudo apt install lnav
+
 And rerun this script.
 EOF
     exit 1
