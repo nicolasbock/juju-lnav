@@ -6,7 +6,7 @@ declare -A MACHINES=()
 declare -A CONTAINERS=()
 declare -A UNITS=()
 
-SSH_OPTIONS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+SSH_OPTIONS="-o StrictHostKeyChecking=no"
 
 install_ssh_key() {
     local unit
@@ -54,8 +54,8 @@ expand_unit() {
         return
     fi
     echo "checking ssh key for ${ip_address}"
+    ssh-keygen -R "${ip_address}" || true
     if ! timeout 5 ssh ${SSH_OPTIONS} "root@${ip_address}" < /dev//null > /dev/null 2>&1; then
-        ssh-keygen -R "${ip_address}"
         install_ssh_key "${unit}"
     fi
     lnav_arguments=( "${lnav_arguments[@]}" "root@${ip_address}:${files}" )
