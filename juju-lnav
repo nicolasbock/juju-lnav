@@ -145,7 +145,7 @@ EOF
 done
 
 if (( debug > 0 )); then
-    set +x
+    set -x
 fi
 
 for argument in "${cached_arguments[@]}"; do
