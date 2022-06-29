@@ -55,7 +55,7 @@ expand_unit() {
         return
     fi
     echo "checking ssh key for ${ip_address}"
-    ssh-keygen -R "${ip_address}" > /dev/null || true
+    ssh-keygen -R "${ip_address}" > /dev/null 2>&1 || true
     if ! timeout 5 ssh -o StrictHostKeyChecking=no "root@${ip_address}" < /dev//null > /dev/null 2>&1; then
         install_ssh_key "${unit}"
     fi
