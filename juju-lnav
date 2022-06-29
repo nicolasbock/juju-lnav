@@ -7,8 +7,11 @@ declare -A CONTAINERS=()
 declare -A UNITS=()
 
 install_ssh_key() {
+    # Install an ssh key using `juju ssh` in a list of units.
+    #
+    # install_ssh_key UNIT [UNIT [UNIT [...]]]
     local unit
-    for unit in $@; do
+    for unit in "$@"; do
         echo "installing ssh key for ${unit}"
         cat ~/.ssh/id_rsa.pub | timeout 10 juju ssh "${unit}" \
             -- sudo tee --append /root/.ssh/authorized_keys
