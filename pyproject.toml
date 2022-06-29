@@ -15,3 +15,6 @@ dependencies = [
 
 [tool.setuptools.packages]
 find = {}  # Scan the project directory with the default parameters
+
+[project.scripts]
+cli-name = "lnavjuju.main:main"
