@@ -11,7 +11,7 @@ The `juju-lnav` command displays multiple log files from multiple machines in
 one view. For example,
           
 ```console
-$ ./tools/juju-lnav octavia:/var/log/octavia/*.log{,1}
+$ juju-lnav octavia:/var/log/octavia/*.log{,1}
 ```
 
 will open the current and the first rotated log files from all of the `octavia`
@@ -20,7 +20,7 @@ units.
 Likewise
 
 ```console
-$ ./tools/juju-lnav octavia:/var/log/octavia/*.log \
+$ juju-lnav octavia:/var/log/octavia/*.log \
     nova-cloud-controller:/var/log/nova/*.log
 ```
 
