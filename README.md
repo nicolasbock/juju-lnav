@@ -43,4 +43,5 @@ or via package
 $ sudo apt install lnav
 ```
 
-For more information on how to use `lnav` please visit lnav.org.
+For more information on how to use `lnav` please visit
+[lnav.org](https://lnav.org).
