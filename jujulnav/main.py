@@ -3,6 +3,8 @@ Main entry point for the juju-lnav script.
 """
 
 import argparse
+import shutil
+import sys
 
 
 def parse_commandline() -> argparse.Namespace:
@@ -27,9 +29,31 @@ def parse_commandline() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def is_lnav_installed() -> bool:
+    """
+    Try to find lnav.
+
+    Returns:
+        bool: Whether lnav is installed.
+    """
+    return shutil.which('lnav') is not None
+
+
 def main():
     """
     Main entry point.
     """
+
+    if not is_lnav_installed():
+        print('''Please install lnav with
+
+sudo snap install lnav
+
+or
+
+sudo apt install lnav
+
+And rerun this script.''')
+        sys.exit(1)
 
     _ = parse_commandline()
