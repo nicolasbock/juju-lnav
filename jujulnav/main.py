@@ -16,6 +16,35 @@ logging.basicConfig(
 log = logging.getLogger('juju-lnav')
 
 
+class Status():
+    """
+    The current status of the Juju model.
+    """
+
+    def __init__(self):
+        """
+        Initialize by fetching the current juju status.
+        """
+        juju = subprocess.Popen(['juju', 'status', '--format', 'json'],
+                                stdout=subprocess.PIPE)
+        juju.wait()
+        self.juju_parsed = yaml.load(juju.stdout, Loader=yaml.FullLoader)
+
+    @property
+    def machine_IPs(self) -> list[tuple[int, list[str]]]:
+        """
+        Get the IP addresses of all machines in the current model.
+
+        Returns:
+            list[tuple[int, list[str]]]: A list of tuples of the form (ID,
+            [Address, Adress, ...]).
+        """
+        ids = [(int(machine_id), machine_details['ip-addresses'])
+               for machine_id, machine_details
+               in self.juju_parsed['machines'].items()]
+        return ids
+
+
 def parse_commandline() -> argparse.Namespace:
     """
     Parses the command line arguments.
@@ -46,23 +75,6 @@ def is_command_installed(command: str) -> bool:
         bool: Whether the command is installed.
     """
     return shutil.which(command) is not None
-
-
-def get_machine_IPs() -> list[tuple[int, list[str]]]:
-    """
-    Get the IP addresses of all machines in the current model.
-
-    Returns:
-        list[tuple[int, list[str]]]: A list of tuples of the form (ID,
-        [Address, Adress, ...]).
-    """
-    juju = subprocess.Popen(['juju', 'status', '--format', 'json'],
-                            stdout=subprocess.PIPE)
-    juju.wait()
-    juju_parsed = yaml.load(juju.stdout, Loader=yaml.FullLoader)
-    ids = [(int(machine_id), machine_details['ip-addresses'])
-           for machine_id, machine_details in juju_parsed['machines'].items()]
-    return ids
 
 
 def main():
@@ -96,4 +108,5 @@ And rerun this script.''')
         sys.exit(1)
     log.debug("found lnav")
 
-    print(get_machine_IPs())
+    status = Status()
+    print(status.machine_IPs)
