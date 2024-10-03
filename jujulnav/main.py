@@ -3,8 +3,15 @@ Main entry point for the juju-lnav script.
 """
 
 import argparse
+import logging
 import shutil
 import sys
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+)
+log = logging.getLogger('juju-lnav')
 
 
 def parse_commandline() -> argparse.Namespace:
@@ -44,12 +51,19 @@ def main():
     Main entry point.
     """
 
+    options = parse_commandline()
+    if options.debug:
+        log.setLevel(logging.DEBUG)
+
     if not is_command_installed('juju'):
         print('''Please install juju with
 
 sudo snap install juju
 
 And rerun this script.''')
+        sys.exit(1)
+    log.debug('found juju')
+
     if not is_command_installed('lnav'):
         print('''Please install lnav with
 
@@ -61,5 +75,4 @@ sudo apt install lnav
 
 And rerun this script.''')
         sys.exit(1)
-
-    _ = parse_commandline()
+    log.debug("found lnav")
