@@ -3,11 +3,12 @@ Main entry point for the juju-lnav script.
 """
 
 import argparse
+from functools import lru_cache
+import json
 import logging
 import shutil
 import subprocess
 import sys
-import yaml
 
 logging.basicConfig(
     level=logging.INFO,
@@ -28,21 +29,37 @@ class Status():
         with subprocess.Popen(['juju', 'status', '--format', 'json'],
                               stdout=subprocess.PIPE) as juju:
             juju.wait()
-        self.juju_parsed = yaml.load(juju.stdout, Loader=yaml.FullLoader)
+            self.juju_parsed = json.loads(juju.stdout.read())
 
     @property
+    @lru_cache
     def machine_IPs(self) -> list[tuple[int, list[str]]]:
         """
         Get the IP addresses of all machines in the current model.
 
         Returns:
             list[tuple[int, list[str]]]: A list of tuples of the form (ID,
-            [Address, Adress, ...]).
+            [Address, Address, ...]).
         """
-        ids = [(int(machine_id), machine_details['ip-addresses'])
-               for machine_id, machine_details
-               in self.juju_parsed['machines'].items()]
-        return ids
+        return [(int(machine_id), machine_details['ip-addresses'])
+                for machine_id, machine_details
+                in self.juju_parsed['machines'].items()]
+
+    @property
+    @lru_cache
+    def container_IPs(self) -> list[tuple[str, list[str]]]:
+        """
+        Get the IP addresses of all containers in the current model.
+
+        Returns:
+            list[tuple[str, list[str]]]: A list of typles of the form (ID,
+            [Address, Address, ...])
+        """
+        if 'containers' not in self.juju_parsed:
+            return []
+        return [(container_id, container_details['ip-addresses'])
+                for container_id, container_details
+                in self.juju_parsed['containers'].items()]
 
 
 def parse_commandline() -> argparse.Namespace:
@@ -109,4 +126,5 @@ And rerun this script.''')
     log.debug("found lnav")
 
     status = Status()
-    print(status.machine_IPs)
+    print(f'machine addresses: {status.machine_IPs}')
+    print(f'container addresses: {status.container_IPs}')
