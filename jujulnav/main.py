@@ -29,14 +29,14 @@ def parse_commandline() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def is_lnav_installed() -> bool:
+def is_command_installed(command: str) -> bool:
     """
-    Try to find lnav.
+    Try to find `command`.
 
     Returns:
-        bool: Whether lnav is installed.
+        bool: Whether `command` is installed.
     """
-    return shutil.which('lnav') is not None
+    return shutil.which(command) is not None
 
 
 def main():
@@ -44,7 +44,13 @@ def main():
     Main entry point.
     """
 
-    if not is_lnav_installed():
+    if not is_command_installed('juju'):
+        print('''Please install juju with
+
+sudo snap install juju
+
+And rerun this script.''')
+    if not is_command_installed('lnav'):
         print('''Please install lnav with
 
 sudo snap install lnav
