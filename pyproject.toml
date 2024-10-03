@@ -8,6 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
+pyyaml = "^6.0.2"
 
 [tool.poetry.group.dev.dependencies]
 bashate = "^2.1.1"

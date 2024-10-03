@@ -5,7 +5,9 @@ Main entry point for the juju-lnav script.
 import argparse
 import logging
 import shutil
+import subprocess
 import sys
+import yaml
 
 logging.basicConfig(
     level=logging.INFO,
@@ -41,9 +43,26 @@ def is_command_installed(command: str) -> bool:
     Try to find `command`.
 
     Returns:
-        bool: Whether `command` is installed.
+        bool: Whether the command is installed.
     """
     return shutil.which(command) is not None
+
+
+def get_machine_IPs() -> list[tuple[int, list[str]]]:
+    """
+    Get the IP addresses of all machines in the current model.
+
+    Returns:
+        list[tuple[int, list[str]]]: A list of tuples of the form (ID,
+        [Address, Adress, ...]).
+    """
+    juju = subprocess.Popen(['juju', 'status', '--format', 'json'],
+                            stdout=subprocess.PIPE)
+    juju.wait()
+    juju_parsed = yaml.load(juju.stdout, Loader=yaml.FullLoader)
+    ids = [(int(machine_id), machine_details['ip-addresses'])
+           for machine_id, machine_details in juju_parsed['machines'].items()]
+    return ids
 
 
 def main():
@@ -76,3 +95,5 @@ sudo apt install lnav
 And rerun this script.''')
         sys.exit(1)
     log.debug("found lnav")
+
+    print(get_machine_IPs())
