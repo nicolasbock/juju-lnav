@@ -25,9 +25,9 @@ class Status():
         """
         Initialize by fetching the current juju status.
         """
-        juju = subprocess.Popen(['juju', 'status', '--format', 'json'],
-                                stdout=subprocess.PIPE)
-        juju.wait()
+        with subprocess.Popen(['juju', 'status', '--format', 'json'],
+                              stdout=subprocess.PIPE) as juju:
+            juju.wait()
         self.juju_parsed = yaml.load(juju.stdout, Loader=yaml.FullLoader)
 
     @property
