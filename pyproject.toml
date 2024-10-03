@@ -11,7 +11,11 @@ python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 bashate = "^2.1.1"
+pylint = "^3.3.1"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+juju-lnav = "jujulnav.main:main"
