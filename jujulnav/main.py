@@ -41,6 +41,8 @@ class Status():
             list[tuple[int, list[str]]]: A list of tuples of the form (ID,
             [Address, Address, ...]).
         """
+        if 'machines' not in self.juju_parsed:
+            return []
         return [(int(machine_id), machine_details['ip-addresses'])
                 for machine_id, machine_details
                 in self.juju_parsed['machines'].items()]
@@ -55,11 +57,27 @@ class Status():
             list[tuple[str, list[str]]]: A list of typles of the form (ID,
             [Address, Address, ...])
         """
-        if 'containers' not in self.juju_parsed:
+        if 'machines' not in self.juju_parsed:
             return []
         return [(container_id, container_details['ip-addresses'])
                 for container_id, container_details
-                in self.juju_parsed['containers'].items()]
+                in self.juju_parsed['machines'].items()]
+
+    @property
+    @lru_cache
+    def unit_IPs(self) -> list[tuple[str, list[str]]]:
+        """
+        Get the IP addresses of all units in the current model.
+
+        Returns:
+            list[tuple[str, list[str]]]: A list of typles of the form (ID,
+            [Address, Address, ...])
+        """
+        if 'units' not in self.juju_parsed:
+            return []
+        return [(container_id, container_details['ip-addresses'])
+                for container_id, container_details
+                in self.juju_parsed['units'].items()]
 
 
 def parse_commandline() -> argparse.Namespace:
@@ -126,5 +144,6 @@ And rerun this script.''')
     log.debug("found lnav")
 
     status = Status()
-    print(f'machine addresses: {status.machine_IPs}')
+    print(f'machine addresses:   {status.machine_IPs}')
     print(f'container addresses: {status.container_IPs}')
+    print(f'unit addresses:      {status.container_IPs}')

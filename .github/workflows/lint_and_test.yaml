@@ -1,4 +1,4 @@
-name: Lint sources
+name: Lint and test sources
 
 on:
   push:
@@ -24,3 +24,5 @@ jobs:
         run: poetry run bashate juju-lnav
       - name: Lint Python sources
         run: poetry run pylint jujulnav
+      - name: Test Python sources
+        run: poetry run pytest --verbose
