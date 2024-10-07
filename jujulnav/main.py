@@ -59,9 +59,14 @@ class Status():
         """
         if 'machines' not in self.juju_parsed:
             return []
-        return [(container_id, container_details['ip-addresses'])
-                for container_id, container_details
-                in self.juju_parsed['machines'].items()]
+        containers = []
+        for machine in self.juju_parsed['machines'].values():
+            if 'containers' in machine:
+                containers.extend([
+                    (container_id, container_details['ip-addresses'])
+                    for container_id, container_details
+                    in machine['containers'].items()])
+        return containers
 
     @property
     @lru_cache
@@ -73,11 +78,16 @@ class Status():
             list[tuple[str, list[str]]]: A list of typles of the form (ID,
             [Address, Address, ...])
         """
-        if 'units' not in self.juju_parsed:
+        if 'applications' not in self.juju_parsed:
             return []
-        return [(container_id, container_details['ip-addresses'])
-                for container_id, container_details
-                in self.juju_parsed['units'].items()]
+        units = []
+        for application in self.juju_parsed['applications'].values():
+            if 'units' in application:
+                units.extend([
+                    (container_id, container_details['public-address'])
+                    for container_id, container_details
+                    in application['units'].items()])
+        return units
 
 
 def parse_commandline() -> argparse.Namespace:
