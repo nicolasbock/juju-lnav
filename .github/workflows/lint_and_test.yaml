@@ -1,0 +1,28 @@
+name: Lint and test sources
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+      - name: Install dependencies
+        run: |
+          DEBIAN_FRONTEND=noninteractive sudo apt-get install --no-install-recommends --yes pip
+          pip install poetry==1.8.2
+          poetry install
+      - name: Lint bash sources
+        run: poetry run bashate juju-lnav
+      - name: Lint Python sources
+        run: poetry run pylint jujulnav
+      - name: Test Python sources
+        run: poetry run pytest --verbose

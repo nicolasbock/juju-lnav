@@ -1,5 +1,5 @@
 name: juju-lnav
-base: core20
+base: core24
 adopt-info: juju-lnav
 summary: A script to look at logs from multiple Juju units
 description: |
@@ -28,45 +28,16 @@ description: |
 grade: stable
 confinement: strict
 
-plugs:
-  lnav-executable:
-    interface: content
-    target: $SNAP/lnav-snap
-    default-provider: lnav
-
 apps:
   juju-lnav:
-    command: usr/bin/juju-lnav
+    command: bin/juju-lnav
 
 parts:
-  selective-checkout:
-    source: https://github.com/Lin-Buo-Ren/selective-checkout.git
-    source-tag: v2.0.2
-    plugin: dump
-    build-packages:
-    - git
-    - curl
-    - jq
-    - sed
-    stage:
-      - scriptlets/selective-checkout
-    prime:
-      - -*
-
   juju-lnav:
-    after:
-      - selective-checkout
-    plugin: dump
+    plugin: python
     source: .
+    build-packages:
+      - git
     override-pull: |
-      snapcraftctl pull
-
-      pwd
-      ls -lh
-
-      "$SNAPCRAFT_STAGE"/scriptlets/selective-checkout --debug \
-        --force-snapshot
-    organize:
-      juju-lnav: usr/bin/juju-lnav
-    stage:
-      - usr/bin/juju-lnav
+      craftctl default
+      craftctl set version=$(git describe --tags)
