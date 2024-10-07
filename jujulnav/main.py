@@ -63,7 +63,7 @@ class Status():
         for machine in self.juju_parsed['machines'].values():
             if 'containers' in machine:
                 containers.extend([
-                    (container_id, container_details['ip-addresses'])
+                    (container_id, container_details.get('ip-addresses', []))
                     for container_id, container_details
                     in machine['containers'].items()])
         return containers
@@ -88,6 +88,19 @@ class Status():
                     for container_id, container_details
                     in application['units'].items()])
         return units
+
+    @property
+    @lru_cache
+    def applications(self) -> list[str]:
+        """
+        Get a list of the appplications in the current model.
+
+        Returns:
+            list[str]: A list of the installed applications.
+        """
+        if 'applications' not in self.juju_parsed:
+            return []
+        return list(self.juju_parsed['applications'].keys())
 
 
 def parse_commandline() -> argparse.Namespace:
@@ -157,3 +170,4 @@ And rerun this script.''')
     print(f'machine addresses:   {status.machine_IPs}')
     print(f'container addresses: {status.container_IPs}')
     print(f'unit addresses:      {status.container_IPs}')
+    print(f'applications:        {status.applications}')

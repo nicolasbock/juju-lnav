@@ -46,13 +46,67 @@ def test_container_IPs(mock_juju_status):
     ]
 
 
+def test_container_IPs_with_addresses():
+    juju_status = {
+        "machines": {
+            "0": {
+                "containers": {
+                    "0/lxc/0": {
+                        "ip-addresses": ["10.0.0.1"]
+                    },
+                    "0/lxc/1": {
+                        "ip-addresses": ["10.0.0.2"]
+                    }
+                }
+            }
+        }
+    }
+    with patch('subprocess.Popen') as mock_popen:
+        mock_popen.return_value.__enter__ \
+            .return_value.stdout.read.return_value = json.dumps(juju_status)
+        status = Status()
+        assert status.container_IPs == [
+            ("0/lxc/0", ["10.0.0.1"]), ("0/lxc/1", ["10.0.0.2"])]
+
+
+def test_container_IPs_without_addresses():
+    juju_status = {
+        "machines": {
+            "0": {
+                "containers": {
+                    "0/lxc/0": {},
+                    "0/lxc/1": {}
+                }
+            }
+        }
+    }
+    with patch('subprocess.Popen') as mock_popen:
+        mock_popen.return_value.__enter__.return_value \
+            .stdout.read.return_value = json.dumps(juju_status)
+        status = Status()
+        assert status.container_IPs == [("0/lxc/0", []), ("0/lxc/1", [])]
+
+
+def test_container_IPs_no_containers():
+    juju_status = {
+        "machines": {
+            "0": {}
+        }
+    }
+    with patch('subprocess.Popen') as mock_popen:
+        mock_popen.return_value.__enter__.return_value \
+            .stdout.read.return_value = json.dumps(juju_status)
+        status = Status()
+        assert not status.container_IPs
+
+
 def test_container_IPs_missing_machines_key():
     with patch('subprocess.Popen') as mock_popen:
         mock_proc = MagicMock()
         mock_proc.stdout.read.return_value = json.dumps({})
         mock_popen.return_value.__enter__.return_value = mock_proc
         status = Status()
-        assert status.container_IPs == []
+        assert not status.container_IPs
 
 
 def test_unit_IPs(mock_juju_status):
