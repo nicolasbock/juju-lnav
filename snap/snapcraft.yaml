@@ -5,19 +5,26 @@ summary: A script to look at logs from multiple Juju units
 description: |
   The `juju-lnav` command is a helper script to call `lnav` (needs to be
   installed via package or snap) on multiple machines, applications, or units.
-  For example,
-          
+
+  For example, after installing `lnav`,
+
   ```
-  $ ./tools/juju-lnav octavia:/var/log/octavia/*.log{,1}
+  sudo snap install lnav
   ```
 
-  Will open the current and the first rotated log files from all of the
+  The log files of units in a Juju model can be inspected with
+          
+  ```
+  juju-lnav octavia:/var/log/octavia/*.log{,1}
+  ```
+
+  which will open the current and the first rotated log files from all of the
   `octavia` units.
 
   Likewise
 
   ```
-  $ ./tools/juju-lnav octavia:/var/log/octavia/*.log \
+  juju-lnav octavia:/var/log/octavia/*.log \
       nova-cloud-controller:/var/log/nova/*.log
   ```
 
