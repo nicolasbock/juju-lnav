@@ -4,6 +4,7 @@ A script to look at logs from multiple Juju units
 
 [![Lint](https://github.com/nicolasbock/juju-lnav/actions/workflows/lint.yml/badge.svg)](https://github.com/nicolasbock/juju-lnav/actions/workflows/lint.yml)
 [![Launchpad](https://img.shields.io/badge/Launchpad-PPA-yellowgreen)](https://launchpad.net/~nicolasbock/+archive/ubuntu/juju-lnav)
+
 [![Get it from the Snap Store](https://snapcraft.io/en/light/install.svg)](https://snapcraft.io/juju-lnav)
 
 ## Description
