@@ -113,7 +113,7 @@ else
     cat <<EOF
 Please install lnav with
 
-sudo snap install --edge lnav
+sudo snap install lnav
 
 or
 
