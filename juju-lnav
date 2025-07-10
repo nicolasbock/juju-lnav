@@ -125,7 +125,7 @@ if command -v lnav > /dev/null; then
     LNAV=lnav
 elif [[ -x ${SNAP}/lnav-snap/bin/lnav ]]; then
     export LD_LIBRARY_PATH="${SNAP}/lnav-snap/lib/x86_64-linux-gnu"
-    LNAV=${SNAP}/lnav-snap/bin/lnav
+    LNAV=${SNAP}/lnav-snap/usr/bin/lnav
 else
     cat <<EOF
 Please install lnav with

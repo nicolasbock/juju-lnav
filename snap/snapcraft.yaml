@@ -33,7 +33,7 @@ grade: stable
 confinement: strict
 
 plugs:
-  lnav-executable:
+  lnav-bin:
     interface: content
     target: $SNAP/lnav-snap
     default-provider: lnav
