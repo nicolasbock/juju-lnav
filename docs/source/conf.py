@@ -36,7 +36,7 @@ source_suffix = {
 }
 
 # Set the master document to readme.md instead of index.rst
-master_doc = 'readme'
+# master_doc = 'index.md'
 
 templates_path = ['_templates']
 exclude_patterns = []
