@@ -42,7 +42,8 @@ The script is a shell script and requires `bash`.
 In order to install the script do one of the following:
 
 1. Clone this repository or download the script itself
-2. Install the [Debian package](https://launchpad.net/~nicolasbock/+archive/ubuntu/juju-lnav)
+1. Install the [Debian package](https://launchpad.net/~nicolasbock/+archive/ubuntu/juju-lnav)
+1. Install the [juju-lnav snap](https://snapcraft.io/juju-lnav)
 
 ## Dependencies
 
