@@ -9,24 +9,22 @@ A script to look at logs from multiple Juju units
 
 ## Description
 
-The `juju-lnav` command displays multiple log files from multiple machines in
-one view. For example,
-          
+The `juju-lnav` command displays multiple log files from multiple machines in one view. For example,
+
 ```console
-$ juju-lnav octavia:/var/log/octavia/*.log{,1}
+juju-lnav octavia:/var/log/octavia/*.log{,1}
 ```
 
-will open the current and the first rotated log files from all of the `octavia`
-units.
+will open the current and the first rotated log files from all of the `octavia` units.
 
 Likewise
 
 ```console
-$ juju-lnav octavia:/var/log/octavia/*.log \
-    nova-cloud-controller:/var/log/nova/*.log
+juju-lnav octavia:/var/log/octavia/*.log \
+  nova-cloud-controller:/var/log/nova
 ```
 
-Will load the logs on all `octavia` and all `nova-cloud-controller` units.
+Will load the logs on all `octavia` ending in `.log` and all files on `nova-cloud-controller` units.
 
 ## Installation
 
@@ -42,20 +40,19 @@ In order to install the script do one of the following:
 The `lnav` log viewer needs to be installed separately either via snap
 
 ```console
-$ sudo snap install lnav
+sudo snap install lnav
 ```
 
 The snap needs to be connected to the `ssh-keys` interface:
 
 ```console
-$ sudo snap connect lnav:ssh-keys
+sudo snap connect lnav:ssh-keys
 ```
 
 or via package
 
 ```console
-$ sudo apt install lnav
+sudo apt install lnav
 ```
 
-For more information on how to use `lnav` please visit
-[lnav.org](https://lnav.org).
+For more information on how to use `lnav` please visit [lnav.org](https://lnav.org).

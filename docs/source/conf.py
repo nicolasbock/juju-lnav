@@ -14,7 +14,24 @@ release = '0.1'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ['myst_parser']
+
+# MyST parser configuration
+myst_enable_extensions = [
+    "deflist",
+    "tasklist",
+    "html_admonition",
+    "html_image",
+]
+
+# Allow MyST to parse files with .md extension
+source_suffix = {
+    '.rst': None,
+    '.md': 'markdown',
+}
+
+# Set the master document to readme.md instead of index.rst
+master_doc = 'readme'
 
 templates_path = ['_templates']
 exclude_patterns = []
