@@ -103,6 +103,20 @@ juju_info_loaded=0
 debug=0
 declare -a cached_arguments=()
 
+JUJU=not-found
+if command -v juju > /dev/null; then
+    JUJU=juju
+else
+    cat <<EOF
+Plase install juju with
+
+sudo snap install juju
+
+And rerun this script.
+EOF
+    exit 1
+fi
+
 LNAV=not-found
 if command -v lnav > /dev/null; then
     LNAV=lnav
@@ -165,5 +179,5 @@ for argument in "${cached_arguments[@]}"; do
     expand_unit "${argument}"
 done
 
-echo "lnav ${lnav_arguments[*]}"
+echo "Executing: lnav ${lnav_arguments[*]}"
 ${LNAV} "${lnav_arguments[@]}"
