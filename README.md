@@ -9,7 +9,7 @@ A script to look at logs from multiple Juju units
 
 ## Description
 
-The `juju-lnav` command displays multiple log files from multiple machines in one view. It uses the `lnav` log file viewer, <lnav.org>, which needs to be installed separately. For example,
+The `juju-lnav` command displays multiple log files from multiple machines in one view. It uses the `lnav` log file viewer, [lnav.org](lnav.org), which needs to be installed separately. For example,
 
 For example, after installing `lnav`,
 
