@@ -7,25 +7,19 @@ description: |
 
   For example, after installing `lnav`,
 
-  ```console
-  sudo snap install lnav
-  sudo snap connect juju-lnav:juju-bin juju
-  ```
+     sudo snap install lnav
+     sudo snap connect juju-lnav:juju-bin juju
 
   running
 
-  ```console
-  juju-lnav octavia:/var/log/octavia/*.log{,1}
-  ```
+     juju-lnav octavia:/var/log/octavia/*.log{,1}
 
   will open the current and the first rotated log files from all of the `octavia` units.
 
   Likewise
 
-  ```console
-  juju-lnav octavia:/var/log/octavia/*.log \
-    nova-cloud-controller:/var/log/nova
-  ```
+     juju-lnav octavia:/var/log/octavia/*.log \
+       nova-cloud-controller:/var/log/nova
 
   Will load the logs on all `octavia` ending in `.log` and all files on `nova-cloud-controller` units.
 
