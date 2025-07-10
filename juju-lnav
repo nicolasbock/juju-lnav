@@ -106,6 +106,9 @@ declare -a cached_arguments=()
 JUJU=not-found
 if command -v juju > /dev/null; then
     JUJU=juju
+elif [[ -x ${SNAP}/juju-snap/bin/juju ]]; then
+    export LD_LIBRARY_PATH="${SNAP}/juju-snap/lib/x86_64-linux-gnu"
+    JUJU=${SNAP}/juju-snap/bin/juju
 else
     cat <<EOF
 Plase install juju with

@@ -15,6 +15,7 @@ For example, after installing `lnav`,
 
 ```console
 sudo snap install lnav
+sudo snap connect juju-lnav:juju-bin juju
 ```
 
 running
