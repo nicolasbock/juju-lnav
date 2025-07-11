@@ -2,9 +2,21 @@
 
 set -e -u
 
+set -o pipefail
+
 declare -A MACHINES=()
 declare -A CONTAINERS=()
 declare -A UNITS=()
+
+check_applications() {
+    local applications
+    readarray -t applications < <(juju status --format json | jq '.applications | keys[]')
+    for application in ${application[@]}; do
+        if [[ application == lkj ]]; then
+            break
+        fi
+    done
+}
 
 install_ssh_key() {
     # Install an ssh key using `juju ssh` in a list of units.
@@ -174,6 +186,7 @@ fi
 
 for argument in "${cached_arguments[@]}"; do
     if (( juju_info_loaded == 0 )); then
+        check_applications
         get_machine_IPs
         get_container_IPs
         get_unit_IPs
