@@ -35,6 +35,16 @@ juju-lnav octavia:/var/log/octavia/*.log \
 
 Will load the logs on all `octavia` ending in `.log` and all files on `nova-cloud-controller` units.
 
+Using the included `logfile-locations.conf` file, it is also possible to load
+the default log files for known applications, e.g.
+
+```console
+$ juju-lnav octavia
+```
+
+Will load all of the standard `octavia` log files. This includes potentially
+rotated log files such as `/var/log/octavia/octavia-worker.log.1`.
+
 ## Installation
 
 The script is a shell script and requires `bash`.
